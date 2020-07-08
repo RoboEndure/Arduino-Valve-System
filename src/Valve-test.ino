@@ -28,6 +28,7 @@ every littel details about valve use
 #define VALVE_PIN_1 2
 #define VALVE_PIN_1 3
 #endif
+
 //sensor type for valve Feedback
 /* 
 you can use this type of sensor
@@ -36,7 +37,6 @@ you can use this type of sensor
 : presser sensor
 : flame sensor
 */
-
 #if TEMPRATURE_SENSOR
 #define TEMPRATURE_SENSOR 4
 #elif FLOW_SENSOR
@@ -47,8 +47,25 @@ you can use this type of sensor
 #define FLAME_SENSOR 4
 #endif
 
+//variable define here 
+double kp = 2;
+double ki = 5;
+double kd = 1;
+ 
+unsigned long currentTime, previousTime;
+double elapsedTime;
+double error;
+double lastError;
+double input, output, setPoint;
+double cumError, rateError;
+
+//details about PID 
+//setPoint = 0;
+
 void setup()
-{
+{   
+    setPoint = 0;
+
     #if VALVE_SINGLE
     pinMode(VALVE_PIN,OUTPUT);
     #elif VALVE_DOUBLE
@@ -69,5 +86,25 @@ void setup()
 
 void loop()
 {
+    input = analogRead(A0);                //read from rotary encoder connected to A0
+    output = computePID(input);
+    delay(100);
+    analogWrite(3, output);                //control the motor based on PID value
+}
+
+double computePID(double inp)
+{     
+    currentTime = millis();                                     //get current time
+    elapsedTime = (double)(currentTime - previousTime);         //compute time elapsed from previous computation
     
+    error = setPoint - inp;                                     // determine error
+    cumError += error * elapsedTime;                            // compute integral
+    rateError = (error - lastError)/elapsedTime;                // compute derivative
+
+    double out = kp*error + ki*cumError + kd*rateError;         //PID output               
+
+    lastError = error;                                          //remember current error
+    previousTime = currentTime;                                 //remember current time
+
+    return out;                                                 //have function return the PID output
 }
