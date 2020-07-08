@@ -6,11 +6,13 @@ Kp, Ki, and Kd are constants that tune how the system reacts to each factor:
 
  
 
+
 We can also replace Ki and Kd with 1/Ti and Td, respectively.
 This change gives the equation a better relationship to
 its physical meaning and allows the units to work out properly to a unitless number:
 
  
+
 
 We can also transpose the equation to extract the Kp value
 and apply it to the entire equation,
