@@ -4,15 +4,13 @@ We can express PID control mathematically with the following equation.
 P, I, and D are represented by the three terms that add together here.
 Kp, Ki, and Kd are constants that tune how the system reacts to each factor:
 
+![PID calculation 1](https://user-images.githubusercontent.com/59052001/87008211-07bf4780-c1e1-11ea-8f74-7d3ff5304f46.png)
  
-
-
 We can also replace Ki and Kd with 1/Ti and Td, respectively.
 This change gives the equation a better relationship to
 its physical meaning and allows the units to work out properly to a unitless number:
 
- 
-
+![PID calculation 2](https://user-images.githubusercontent.com/59052001/87008271-1f96cb80-c1e1-11ea-8ba7-ae551f0909b5.png)
 
 We can also transpose the equation to extract the Kp value
 and apply it to the entire equation,
@@ -20,9 +18,7 @@ in what's known as the standard form.
 One advantage of this form is that we can adjust
 the overall Kp constant for the whole equation at one time:
 
-
- 
-
+![PID calculation 3](https://user-images.githubusercontent.com/59052001/87008298-2cb3ba80-c1e1-11ea-8018-b5cfbd246929.png)
 
 All of this may look a bit intimidating, perhaps even to someone who graduated with an engineering degree.
 The good news is that you don't have to dig out your Modeling and Analysis of Dynamic Systems textbook to
