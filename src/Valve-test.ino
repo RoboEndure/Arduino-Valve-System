@@ -10,6 +10,9 @@ etc
 every littel details about valve use
 */
 
+// #define CONSTANT 
+// #define NON_CONSTANT
+
 //select onlyone valve system
 #define VALVE_SINGLE true
 //#define VALVE_DOUBLE true
@@ -25,38 +28,27 @@ every littel details about valve use
 
 //single valve 
 #if VALVE_SINGLE
+#define NON_CONSTANT
 #define VALVE_PIN 2
 #elif VALVE_DOUBLE
 //duble valve
+#define CONSTANT 
 #define VALVE_PIN_1 2
 #define VALVE_PIN_1 3
 #elif MOTOR_STEPPER
+#define CONSTANT 
 #define STEP_PIN 2
 #define DIRC_PIN 3
 #elif MOTOR_SERVO_MINI
+#define CONSTANT 
 #define PULSE_PIN 2
 #elif MOTOR_DC
+#define CONSTANT 
 #define STEP_PIN 2
 #define DIRC_PIN 3
 #endif
 
-//sensor type for valve Feedback
-/* 
-you can use this type of sensor
-: temprature sensor 
-: flow sensor
-: presser sensor
-: flame sensor
-*/
-#if TEMPRATURE_SENSOR
-#define TEMPRATURE_SENSOR A0
-#elif FLOW_SENSOR
-#define FLOW_SENSOR A0
-#elif PRESSUER_SENSOR
-#define PRESSUER_SENSOR A0
-#elif FLAME_SENSOR
-#define FLAME_SENSOR A0
-#endif
+#define ANALOG_INPUT A0//use for single pin analog input sensor
 
 //variable define here 
 double kp = 2;
@@ -73,6 +65,24 @@ double cumError, rateError;
 //details about PID 
 //setPoint = 0;
 int sensor_value = 0;
+
+//sensor type for valve Feedback
+/* 
+you can use this type of sensor
+: temprature sensor 
+: flow sensor
+: presser sensor
+: flame sensor
+*/
+#if TEMPRATURE_SENSOR
+#define TEMPRATURE_SENSOR
+#elif FLOW_SENSOR
+#define FLOW_SENSOR 
+#elif PRESSUER_SENSOR
+#define PRESSUER_SENSOR 
+#elif FLAME_SENSOR
+#define FLAME_SENSOR 
+#endif
 
 void setup()
 {   
@@ -93,24 +103,12 @@ void setup()
     pinMode(DIRC_PIN,OUTPUT);
     #endif
 
-    #if TEMPRATURE_SENSOR
-    //pinMode(TEMPRATURE_SENSOR,INPUT);
-    this->sensor_value = TEMPRATURE_SENSOR;
-    #elif FLOW_SENSOR
-    //pinMode(FLOW_SENSOR,INPUT);
-    this->sensor_value = FLOW_SENSOR;
-    #elif PRESSUER_SENSOR
-    //pinMode(PRESSUER_SENSOR,INPUT);
-    this->sensor_value = PRESSUER_SENSOR;
-    #elif FLAME_SENSOR
-    //pinMode(FLAME_SENSOR,INPUT);
-    this->sensor_value = FLAME_SENSOR;
-    #endif
+    
 }
 
 void loop()
 {
-    input = analogRead(sensor_value);                //read from selected sensor system
+    input = analogRead(ANALOG_INPUT);                //read from selected sensor system
     output = computePID(input);            //calculate PID using selected system configuration 
     delay(100);                            //gap between two loop
 

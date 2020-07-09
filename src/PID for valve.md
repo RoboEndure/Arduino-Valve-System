@@ -69,3 +69,40 @@ implement early forms of PID control, using mechanical means to input each "term
 2. Subtract the previous instantaneous reading from it.
 
 3. Multiply that resulting valueby Kd to calculate its contribution to u(t). 
+
+
+##How To Genaret Pulse for stepper motor
+
+How many turns (N t = number of turns)
+Stepper Driver microsteps (steps/revolution)
+minimun turn value(Nmin = number of minimun turn > value in float)
+maximun turn value (= number of turns)(Nmax = number of maximum turn > value in float)
+
+What we need maximum pulse and minimum pulse?
+Pmin = ?
+Pmax = ?
+
+example:
+N t = 5
+steps/revolution = 200
+
+Pmax = N t X steps/revolution
+     = 4 X 200
+Pmax = 800
+
+Pmin = Nmin X steps?revolution
+     = 0.5 X 200
+Pmin = 100
+
+Analog Output is between = 1 to 1023
+
+simple math use here
+ Analog Out Max         Pmax
+ 1023                   800
+ Analog Out             P
+ 45                     ?
+
+P = (45 X 800)/1023
+P = (36000)/1023 
+P = 35.19061583577713‬
+P = 35
