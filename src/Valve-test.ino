@@ -108,8 +108,6 @@ double kp = 1;
 double ki = 0;
 double kd = 0;
  
-
-
 unsigned long currentTime, previousTime;
 double elapsedTime;
 double error;
@@ -162,8 +160,10 @@ void loop()
     analogWrite(3, output);                //control the valve based on PID value or motors
     Serial.print(input);
     Serial.print("  =  ");
-    //Serial.println(output);
+    Serial.println(output);
     Serial.println();
+
+    delay(10);
 }
 
 
@@ -183,21 +183,15 @@ int digitalCalibration()
 {
     #ifdef DIGITAL_SENSOR
 
-        DIGITAL_INPUT = random(DIGITAL_MIN_INPUT,DIGITAL_MAX_INPUT);
-
-        Serial.println(DIGITAL_INPUT);
+        //DIGITAL_INPUT = random(DIGITAL_MIN_INPUT,DIGITAL_MAX_INPUT); //use this for tesing perpos
 
         float temp = (( DIGITAL_INPUT * percent ) / DIGITAL_MAX_INPUT);
         float  DAC = (( analog_max * temp) / percent);
 
-        Serial.println(temp);
-        Serial.println(DAC);
-        Serial.println();
-        Serial.println();
-        Serial.println();
+        delay(10);
 
         return DAC; 
-1
+
     #endif
 }
 
