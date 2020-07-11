@@ -1,6 +1,7 @@
 # Valve-System
 All type of valve automizetion 
 
+### Singel *.ino file can do every valve setting without needed any extra file
 
 File get update.until sketch finish.
 
