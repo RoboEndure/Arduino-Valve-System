@@ -18,37 +18,26 @@ so change when you know this not damage your hardware
 */
 
 
-//select onlyone valve system
 
-#define VALVE_SINGLE true
-
-//#define VALVE_DOUBLE true
-
-//#define MOTOR_STEPPER true
-
-//#define MOTOR_SERVO_MINI true
-
-//#define MOTOR_DC true
 
 
 
 //select sensor type
 
-#define ANALOG_SENSOR 1      //sensor output is analog then select this type sensor 
+//#define ANALOG_SENSOR 1      //sensor output is analog then select this type sensor 
 
-//#define DIGITAL_SENSOR 1   //sensor output is digital then select this type sensor 
+#define DIGITAL_SENSOR 1   //sensor output is digital then select this type sensor 
 
 
 
 #if ANALOG_SENSOR
     #define ANALOG_INPUT A0//select pin for analog sensor input
-    #define INPUT_VALUE ANALOG_INPUT
 #elif DIGITAL_SENSOR 
-    #define DIGITAL_INPUT 1
-    #define DIGITAL_MIN_INPUT 1   //value in digits so, dont change until you know ablut your sensor default value
-    #define DIGITAL_MAX_INPUT 100
-    #define INPUT_VALUE DIGITAL_INPUT
+    float DIGITAL_INPUT;
+    float DIGITAL_MIN_INPUT = 1;   //value in digits so, dont change until you know ablut your sensor default value
+    float DIGITAL_MAX_INPUT = 400;   // 100
 #endif
+
 
 
 /*
@@ -58,6 +47,23 @@ so change when you know this not damage your hardware
     so take care of that things 
     so be carefull when you use skech like this
 */
+
+
+
+//select onlyone valve system
+
+#define VALVE_SINGLE 1
+
+//#define VALVE_DOUBLE 1
+
+//#define MOTOR_STEPPER 1
+
+//#define MOTOR_SERVO_MINI 1
+
+//#define MOTOR_DC 1
+
+
+
 //single valve 
 #if VALVE_SINGLE
     #define NON_CONSTANT 1
@@ -98,9 +104,9 @@ so change when you know this not damage your hardware
 
 
 //variable define here 
-double kp = 2;
-double ki = 5;
-double kd = 1;
+double kp = 1;
+double ki = 0;
+double kd = 0;
  
 
 
@@ -111,7 +117,8 @@ double lastError;
 double input, output, setPoint;
 double cumError, rateError;
 
-
+float analog_max =  1023.00;
+float percent = 100.00;
 
 //details about PID 
 //setPoint = 0;
@@ -121,7 +128,9 @@ int sensor_value = 0;
 
 void setup()
 {   
-    setPoint = 0;
+    Serial.begin(9600);
+
+    setPoint = 200;
 
     #if VALVE_SINGLE
         pinMode(VALVE_PIN,OUTPUT);
@@ -151,6 +160,10 @@ void loop()
 
 
     analogWrite(3, output);                //control the valve based on PID value or motors
+    Serial.print(input);
+    Serial.print("  =  ");
+    //Serial.println(output);
+    Serial.println();
 }
 
 
@@ -158,7 +171,7 @@ void loop()
 void input_value()
 {
     #if ANALOG_SENSOR
-        input = analogRead(INPUT_VALUE);
+        input = analogRead(ANALOG_INPUT);
     #elif DIGITAL_SENSOR
         input = digitalCalibration();
     #endif
@@ -168,10 +181,23 @@ void input_value()
 
 int digitalCalibration()
 {
-    #define MAX_ANALOG 1023
     #ifdef DIGITAL_SENSOR
-        INPUT_VALUE = ((DIGITAL_MAX_INPUT * DIGITAL_INPUT) / MAX_ANALOG);
-        return INPUT_VALUE; 
+
+        DIGITAL_INPUT = random(DIGITAL_MIN_INPUT,DIGITAL_MAX_INPUT);
+
+        Serial.println(DIGITAL_INPUT);
+
+        float temp = (( DIGITAL_INPUT * percent ) / DIGITAL_MAX_INPUT);
+        float  DAC = (( analog_max * temp) / percent);
+
+        Serial.println(temp);
+        Serial.println(DAC);
+        Serial.println();
+        Serial.println();
+        Serial.println();
+
+        return DAC; 
+1
     #endif
 }
 

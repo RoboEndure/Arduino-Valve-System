@@ -1,5 +1,6 @@
 {
     "board": "arduino:avr:mega",
     "configuration": "cpu=atmega2560",
-    "sketch": "src\\Valve-test.ino"
+    "sketch": "src\\Valve-test.ino",
+    "port": "COM12"
 }
