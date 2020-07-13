@@ -24,9 +24,9 @@ so change when you know this not damage your hardware
 
 //select sensor type
 
-//#define ANALOG_SENSOR 1      //sensor output is analog then select this type sensor 
+#define ANALOG_SENSOR 1      //sensor output is analog then select this type sensor 
 
-#define DIGITAL_SENSOR 1   //sensor output is digital then select this type sensor 
+//#define DIGITAL_SENSOR 1   //sensor output is digital then select this type sensor 
 
 
 
@@ -35,7 +35,7 @@ so change when you know this not damage your hardware
 #elif DIGITAL_SENSOR 
     float DIGITAL_INPUT;
     float DIGITAL_MIN_INPUT = 1;   //value in digits so, dont change until you know ablut your sensor default value
-    float DIGITAL_MAX_INPUT = 400;   // 100
+    float DIGITAL_MAX_INPUT = 1037;   // 100
 #endif
 
 
@@ -152,16 +152,21 @@ void setup()
 
 void loop()
 {
+    #ifdef DIGITAL_SENSOR
+        DIGITAL_INPUT = thermocouple.readCelsius();//any type of digital sensor input value 
+    #endif
+
     input_value();                //read from selected sensor system
     output = computePID(input);            //calculate PID using selected system configuration 
     delay(100);                            //gap between two loop
 
 
     analogWrite(3, output);                //control the valve based on PID value or motors
-    Serial.print(input);
-    Serial.print("  =  ");
-    Serial.println(output);
-    Serial.println();
+    
+    // Serial.print(input);
+    // Serial.print("  =  ");
+    // Serial.println(output);
+    // Serial.println();
 
     delay(10);
 }
